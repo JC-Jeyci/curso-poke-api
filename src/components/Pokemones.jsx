@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { getInfoPokemon, getPokemons } from '../api/pokeApis'
+import usePokemones from '../hooks/usePokemones'
 import './Pokemones.css'
 
 function Pokemon({ id, name, img }) {
@@ -16,36 +15,12 @@ function Pokemon({ id, name, img }) {
 
 export default function Pokemones() {
 
-  const [pokemones, setPokemones] = useState([])
-
-  const cargarPokemons = async () => {
-    try {
-      const dataPokemones = await getPokemons()
-      const { results } = dataPokemones
-
-      const infoPokemones = []
-
-      for (let i in results) {
-        let url = results[i].url
-        const poke = await getInfoPokemon(url)
-        infoPokemones.push({ id: poke.id, name: poke.name, img: poke.sprites.other["official-artwork"].front_default })
-        //infoPokemones.push({ id: poke.id, name: poke.name, img: poke.sprites.other["dream_world"].front_default })
-      }
-
-      setPokemones(infoPokemones)
-
-    } catch (error) {
-      console.log(`Error al conseguir los pokemons`);
-    }
-  }
-
-  useEffect(() => {
-    cargarPokemons()
-  }, [])
+  const { pokemones, siguientesPokemones } = usePokemones()
 
   return (
     <section className='pokemon-container'>
-      {pokemones.map(pokemon => <Pokemon {...pokemon} />)}
+      {pokemones.map(pokemon => <Pokemon {...pokemon} key={pokemon.id} />)}
+      <button className='btn-buscar' onClick={siguientesPokemones}>Mostrar más pokemones</button>
     </section>
   )
 };

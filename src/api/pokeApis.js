@@ -8,12 +8,19 @@ const api = axios.create({
     },
 });
 
-export const getPokemons = async () => {
-    const response = await api.get(`/pokemon?limit=20&offset=0`);
+export const getPokemons = async (url) => {
+    let auxUrl = url == '' ? `/pokemon?limit=20&offset=0` : url
+
+    const response = await api.get(auxUrl);
     return response.data;
 }
 
 export const getInfoPokemon = async (url) => {
+    const response = await axios.get(`${url}`)
+    return response.data;
+}
+
+export const getApiPokemon = async (url) => {
     const response = await axios.get(`${url}`)
     return response.data;
 }
