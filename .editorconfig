@@ -1,0 +1,20 @@
+root = true
+
+[*]
+indent_style = space
+
+[*.{cs,jsx,less,sass,css,yml}]
+indent_size = 2
+
+[*.{js}]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[*.{yaml,yml}]
+indent_size = 4
+
+[*.{html,twig,html.twig}]
+indent_size = 2
+
