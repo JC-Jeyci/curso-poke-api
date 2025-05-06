@@ -5,6 +5,7 @@ const URL_DEFAULT = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`
 function usePokemones() {
     const [pokemones, setPokemones] = useState([])
     const [nextUrl, setNextUrl] = useState('')
+    const [verMas, setVerMas] = useState(true)
 
     const cargarPokemons = async (url = URL_DEFAULT) => {
         try {
@@ -17,7 +18,7 @@ function usePokemones() {
             for (let i in results) {
                 let url = results[i].url
                 const poke = await getInfoPokemon(url)
-                infoPokemones.push({ id: poke.id, name: poke.name, img: poke.sprites.other["official-artwork"].front_default })
+                infoPokemones.push({ id: poke.id, name: poke.name, img: poke.sprites.other["official-artwork"].front_default || poke.sprites.front_default })
                 //infoPokemones.push({ id: poke.id, name: poke.name, img: poke.sprites.other["dream_world"].front_default })
             }
 
@@ -38,6 +39,7 @@ function usePokemones() {
     const siguientesPokemones = async () => {
         const { next, infoPokemones } = await cargarPokemons(nextUrl)
         setPokemones(prev => [...prev, ...infoPokemones])
+        next === null && setVerMas(false)
         setNextUrl(next)
     }
 
@@ -45,7 +47,7 @@ function usePokemones() {
         obtenerPokemones()
     }, [])
 
-    return { pokemones, siguientesPokemones }
+    return { pokemones, siguientesPokemones, verMas }
 }
 
 export default usePokemones
